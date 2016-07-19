@@ -2,19 +2,13 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class GoalMechanism : MonoBehaviour
+public class StartGame : MonoBehaviour
 {
-    public isOrangeGoal orangeGoal;
-    public isBlueGoal blueGoal;
     public GameObject ball;
 
     // Use this for initialization
     void Start()
     {
-        //orangeGoal = gameObject.AddComponent<isOrangeGoal>();
-        //blueGoal = gameObject.AddComponent<isBlueGoal>();
-        orangeGoal = new isOrangeGoal();
-        blueGoal = new isBlueGoal();
         CoinToss();
     }
 
