@@ -1,11 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public class isBlueGoal : MonoBehaviour
+public class GoalController : MonoBehaviour
 {
     private int goalCount;
-    public Text goalText;
+
+    [SerializeField]
+    private Text goalText;
 
     void Start()
     {

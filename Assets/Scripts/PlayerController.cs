@@ -51,9 +51,7 @@ public class PlayerController : MonoBehaviour {
 
     void Update() {
 
-        /*
         // wasd & up, left, down and right key movement
-
 
         // Player 1 moves forward with w or with the xbox controller by using the left analog stick
         if(Input.GetKey("w")) {
@@ -87,6 +85,5 @@ public class PlayerController : MonoBehaviour {
         else if(Input.GetKey("right")) {
             rightPlayer.Translate(Vector3.right * Time.deltaTime * speed);
         }
-        */
     }
 }
