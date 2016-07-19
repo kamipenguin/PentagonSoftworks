@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{76722543-4BB5-4581-E825-5C471EA0CE57}</ProjectGuid>
+    <ProjectGuid>{DC1D886B-C869-5FAC-A715-279CBEE73BF6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -45,8 +45,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\CharacterAController.cs" />
-     <Compile Include="Assets\Scripts\MovementController.cs" />
+     <Compile Include="Assets\Scripts\JoystickController.cs" />
+     <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\isBlueGoal.cs" />
+     <Compile Include="Assets\Scripts\isOrangeGoal.cs" />
+     <Compile Include="Assets\Scripts\moveBall.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
