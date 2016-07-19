@@ -20,18 +20,7 @@ public class GoalController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Ball"))
-        {
-            goalCount++;
-            SetGoalText();
-            Destroy(other.gameObject);
-            if(other.gameObject.transform.position.z < -10) {
-                game.SpawnBall(game.GetPlayer2Spawn());
-            }
-            else {
-                game.SpawnBall(game.GetPlayer1Spawn());
-            }
-        }
+
     }
 
     void SetGoalText()
