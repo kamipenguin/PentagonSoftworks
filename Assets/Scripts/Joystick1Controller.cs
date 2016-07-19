@@ -1,18 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class JoystickController : MonoBehaviour
+public class Joystick1Controller : MonoBehaviour
 {
+    [SerializeField]
     private PlayerController player1;
-    private PlayerController player2;
-    
     
     // Use this for initialization
-    void Start()
-    {
-        player1 = GameObject.FindWithTag("player1").GetComponent<PlayerController>();
-        //player2 = GameObject.FindWithTag("player2").GetComponent<PlayerController>();
-    }
+    void Start() {}
 
     // Update is called once per frame
     void Update()
@@ -26,15 +21,24 @@ public class JoystickController : MonoBehaviour
         if (Input.GetAxis("Player1PullLeft") == 1)
             player1.pullLeft();
 
-
         if (Input.GetAxis("Player1PullRight") == 1)
             player1.pullRight();
 
         if (Input.GetAxis("HorizontalPlayer1Left") != 0 || Input.GetAxis("VerticalPlayer1Left") != 0)
-            print("move");
+        {
+            Vector3 direction = new Vector3(Input.GetAxis("HorizontalPlayer1Left"), 0, 
+                -Input.GetAxis("VerticalPlayer1Left")) * Time.deltaTime;
+
+            player1.moveLeftPlayer(direction);
+        }
 
         if (Input.GetAxis("HorizontalPlayer1Right") != 0 || Input.GetAxis("VerticalPlayer1Right") != 0)
-            print("move right");
+        {
+            Vector3 direction = new Vector3(Input.GetAxis("HorizontalPlayer1Right"), 0,
+                -Input.GetAxis("VerticalPlayer1Right")) * Time.deltaTime;
+
+            player1.moveRightPlayer(direction);
+        }
 
         //print(Input.GetAxis("player1FireLeft"));
         //print(Input.GetAxis("player1FireRight"));
