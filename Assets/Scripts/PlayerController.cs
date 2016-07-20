@@ -1,81 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum PlayerEnum{Player1,Player2}
-public enum CharacterEnum{Left,Right}
-
-public class PlayerController : MonoBehaviour
-{
-    [SerializeField]
-    private float moveSpeed =3f;
-    
-    public PlayerEnum myPlayer;
-    [SerializeField]
-    CharacterEnum character;
-    // Use this for initialization
-    void Start() {}
-
-    // Update is called once per frame
-    void Update()
-    {
-        /*
-        switch(myPlayer){
-
-            case PlayerEnum.Player1: 
-            if(character == CharacterEnum.Left)
-            transform.position += (Input.GetAxis("HorizontalPlayer1Left")*transform.right + Input.GetAxis("VerticalPlayer1Left")*transform.forward).normalized * moveSpeed * Time.deltaTime;
-            
-            if(character == CharacterEnum.Right)
-            transform.position += (Input.GetAxis("HorizontalPlayer1Left")*transform.right + Input.GetAxis("VerticalPlayer1Left")*transform.forward).normalized * moveSpeed * Time.deltaTime;
-            break;
-            case PlayerEnum.Player2: 
-            if(character == CharacterEnum.Left)
-            transform.position += (Input.GetAxis("HorizontalPlayer2Left")*transform.right + Input.GetAxis("VerticalPlayer2Left")*transform.forward).normalized * moveSpeed * Time.deltaTime;
-            if(character == CharacterEnum.Right)
-            transform.position += (Input.GetAxis("HorizontalPlayer2Left")*transform.right + Input.GetAxis("VerticalPlayer2Left")*transform.forward).normalized * moveSpeed * Time.deltaTime;
-            break;
-        }
-
-        /*
-        if (Input.GetKey(KeyCode.Joystick1Button4))
-            player1.pushLeft();
-
-        if (Input.GetKey(KeyCode.Joystick1Button5))
-            player1.pushRight();
-
-        if (Input.GetAxis("Player1PullLeft") == 1)
-            player1.pullLeft();
-
-        if (Input.GetAxis("Player1PullRight") == 1)
-            player1.pullRight();
-
-        if (Input.GetAxis("HorizontalPlayer1Left") != 0 || Input.GetAxis("VerticalPlayer1Left") != 0)
-        {
-            Vector3 direction = new Vector3(Input.GetAxis("HorizontalPlayer1Left"), 0, 
-                -Input.GetAxis("VerticalPlayer1Left")) * Time.deltaTime;
-
-            player1.moveLeftPlayer(direction);
-        }
-
-        if (Input.GetAxis("HorizontalPlayer1Right") != 0 || Input.GetAxis("VerticalPlayer1Right") != 0)
-        {
-            Vector3 direction = new Vector3(Input.GetAxis("HorizontalPlayer1Right"), 0,
-                -Input.GetAxis("VerticalPlayer1Right")) * Time.deltaTime;
-
-            player1.moveRightPlayer(direction);
-        }
-
-        //print(Input.GetAxis("player1FireLeft"));
-        //print(Input.GetAxis("player1FireRight"));
-        /*print(Input.GetAxis("player2FireLeft"));
-        print(Input.GetAxis("player2FireRight"));*/
-
-    }
-}
-
-/*using UnityEngine;
-using System.Collections;
-
 public class PlayerController : MonoBehaviour {
 
     [SerializeField]
@@ -83,54 +8,72 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private Transform rightPlayer;
 
+    [SerializeField]
+    private float speed;
+
     private Rigidbody rbLeftPlayer;
     private Rigidbody rbRightPlayer;
 
-    [SerializeField]
-    private float force = 1000f;
+    private Rigidbody ballBody;
+    private Ball ball;
 
-    [SerializeField]
-    private float speed;
-    
-    public void pushLeft()
+    private float distanceToBall = 0;
+
+    void Start()
     {
-        print("pushleft");
-    }
+        ballBody = GameObject.FindWithTag("Ball").transform.GetComponent<Rigidbody>();
+        ball = GameObject.FindWithTag("Ball").transform.GetComponent<Ball>();
 
-    public void pushRight()
-    {
-        print("pushright");
-    }
-
-    public void pullLeft()
-    {
-        print("pullleft");
-    }
-
-    public void pullRight()
-    {
-        print("pullright");
-    }
-
-    public void moveLeftPlayer(Vector3 direction)
-    {
-        rbLeftPlayer.position += direction * Time.deltaTime * speed;
-    }
-
-    public void moveRightPlayer(Vector3 direction)
-    {
-        rbRightPlayer.position += direction * Time.deltaTime * speed;
-    }
-
-    void Start() {
         rbLeftPlayer = leftPlayer.GetComponent<Rigidbody>();
         rbRightPlayer = rightPlayer.GetComponent<Rigidbody>();
     }
 
+
+    public void pushLeft()
+    {
+        distanceToBall = Vector3.Distance(ballBody.position, rbLeftPlayer.position);
+
+        if (distanceToBall < 10)
+            ball.push(leftPlayer);
+    }
+
+    public void pushRight()
+    {
+        distanceToBall = Vector3.Distance(ballBody.position, rbRightPlayer.position);
+
+        if (distanceToBall < 10)
+            ball.push(rightPlayer);
+    }
+
+    /*public void pullLeft()
+     {
+         /*distanceToBall = ballBody.position + body.position;
+         if (distanceToBall.magnitude <= 7)
+         {
+
+
+         /*}
+         else
+             ball.pull = false;
+         ball.pull = true;
+         ball.pulling(playerLeft.position);
+     }
+     public void pullRight()
+     {
+         print("pullright");
+     }*/
+
+    public void moveLeft(Vector3 direction)
+    {
+       rbLeftPlayer.position += direction;
+    }
+
+    public void moveRight(Vector3 direction)
+    {
+      rbRightPlayer.position += direction;
+    }
+
     void Update() {
-
-        // wasd & up, left, down and right key movement
-
         // Player 1 moves forward with w or with the xbox controller by using the left analog stick
         if(Input.GetKey("w")) {
             leftPlayer.Translate(Vector3.forward * Time.deltaTime * speed);
@@ -164,21 +107,4 @@ public class PlayerController : MonoBehaviour {
             rightPlayer.Translate(Vector3.right * Time.deltaTime * speed);
         }
     }
-
-    void OnTriggerStay(Collider col)
-    {
-        //if(col.gameObject.CompareTag("Ball"))
-        //{
-        //    Debug.Log("ssfsf");
-        //}
-    }
-
-    public void ForceFieldPush(GameObject gameObject) {
-        Debug.Log("ForceFieldPush");
-        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-        Vector3 dir = new Vector3(0,0,0);
-        rb.AddForce(dir*force);
-
-    }
 }
-*/
