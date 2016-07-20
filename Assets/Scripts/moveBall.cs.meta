@@ -1,11 +1,6 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
-guid: fbb9f6b8c599942d3abc608aeb1ac0f7
-timeCreated: 1468917217
-=======
-guid: 5b6abe4d5b0a44e90be5547331e5735b
-timeCreated: 1468930740
->>>>>>> origin/PushPullMechanism
+guid: fcefd9fe585ab434e898f703559c3662
+timeCreated: 1468857595
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
