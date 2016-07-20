@@ -14,9 +14,7 @@ public class PlayerController : MonoBehaviour
     private float speed;
 
     public void Move(Vector3 movement) {
-        //Debug.Log(movement);
         this.movement = movement * Time.deltaTime;
-        //transform.Translate(movement * Time.deltaTime * speed);
     }
 
     void Start() {

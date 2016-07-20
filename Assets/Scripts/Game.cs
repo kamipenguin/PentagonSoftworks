@@ -19,6 +19,8 @@ public class Game : MonoBehaviour
 
     private PlayerController p1L, p1R, p2L, p2R;
 
+    private float p1LhAxis, p1LvAxis, p1RhAxis, p1RvAxis, p2LhAxis, p2LvAxis, p2RhAxis, p2RvAxis;
+
     void Start()
     {
         // Create the ball at either the player 1 side or player 2 side of the field
@@ -51,47 +53,36 @@ public class Game : MonoBehaviour
     }
 
     void Update() {
+        p1LhAxis = Input.GetAxis("Player1LeftHorizontal");
+        p1LvAxis = Input.GetAxis("Player1LeftVertical");
+        p1RhAxis = Input.GetAxis("Player1RightHorizontal");
+        p1RvAxis = Input.GetAxis("Player1RightVertical");
+        p2LhAxis = Input.GetAxis("Player2LeftHorizontal");
+        p2LvAxis = Input.GetAxis("Player2LeftVertical");
+        p2RhAxis = Input.GetAxis("Player2RightHorizontal");
+        p2RvAxis = Input.GetAxis("Player2RightVertical");
 
-        if(Input.GetAxis("Player1LeftTrigger") > 0.0f) {
-            Debug.Log("Player1LeftTrigger");
-            if(!p1L.IsBoostUsed()) {
-                p1L.Boost();
-            }
-        }
+        Debug.Log("Player1LeftHorizontal:" + p1LhAxis);
+        Debug.Log("Player1LeftVertical:" + p1LvAxis);
+        Debug.Log("Player1RightHorizontal:" + p1RhAxis);
+        Debug.Log("Player1RightVertical:" + p1RvAxis);
+        Debug.Log("Player2LeftHorizontal:" + p2LhAxis);
+        Debug.Log("Player2LeftVertical:" + p2LvAxis);
+        Debug.Log("Player2RightHorizontal:" + p2RhAxis);
+        Debug.Log("Player2RightHorizontal:" + p2RvAxis);
 
-        if(Input.GetAxis("Player1RightTrigger") > 0.0f) {
-            Debug.Log("Player1RightTrigger");
-            if(!p1R.IsBoostUsed()) {
-                p1R.Boost();
-            }
-        }
-
-        if(Input.GetAxis("Player2LeftTrigger") > 0.0f) {
-            Debug.Log("Player2LeftTrigger");
-            if(!p2L.IsBoostUsed()) {
-                p2L.Boost();
-            }
-        }
-
-        if(Input.GetAxis("Player2RightTrigger") > 0.0f) {
-            Debug.Log("Player2RightTrigger");
-            if(!p2R.IsBoostUsed()) {
-                p2R.Boost();
-            }
-        }
-
-        p1L.Move( new Vector3(Input.GetAxis("Player1LeftHorizontal"), 0.0f,  Input.GetAxis("Player1LeftVertical")) );
-        p1R.Move( new Vector3(Input.GetAxis("Player1RightHorizontal"), 0.0f, Input.GetAxis("Player1RightVertical")) );
-        p2L.Move( new Vector3(Input.GetAxis("Player2LeftHorizontal"), 0.0f, Input.GetAxis("Player2LeftVertical")) );
-        p2R.Move( new Vector3(Input.GetAxis("Player2RightHorizontal"), 0.0f, Input.GetAxis("Player2RightVertical")) );
-
-        if(Input.GetAxis("Player1LeftHorizontal") == 0.0f && Input.GetAxis("Player1LeftVertical") == 0.0f)
-            p1L.Move(new Vector3(0, 0, 0));
-        if(Input.GetAxis("Player1RightHorizontal") == 0.0f && Input.GetAxis("Player1RightVertical") == 0.0f)
-            p1R.Move(new Vector3(0, 0, 0));
-        if(Input.GetAxis("Player2LeftHorizontal") == 0.0f && Input.GetAxis("Player2LeftVertical") == 0.0f)
-            p2L.Move(new Vector3(0, 0, 0));
-        if(Input.GetAxis("Player2RightHorizontal") == 0.0f && Input.GetAxis("Player2RightVertical") == 0.0f)
-            p2R.Move(new Vector3(0, 0, 0));
+        // Deadzone
+        //if((p1LvAxis > 0.3f && p1LhAxis > 0.3f) || (p1LvAxis < -0.3f && p1LhAxis < -0.3f)) {
+            p1L.Move( new Vector3(p1LhAxis, 0.0f,  p1LvAxis) );
+        //}
+        //if((p1RvAxis > 0.3f && p1RhAxis > 0.3f) || (p1RvAxis < -0.3f && p1RhAxis < -0.3f)) {
+            p1R.Move( new Vector3(p1RhAxis, 0.0f, p1RvAxis) );
+        //}
+        //if((p2LvAxis > 0.3f && p2LhAxis > 0.3f) || (p2LvAxis < -0.3f && p2LhAxis < -0.3f)) {
+            p2L.Move( new Vector3(p2LhAxis, 0.0f, p2LvAxis) );
+        //}
+        //if((p2RvAxis > 0.3f && p2RhAxis > 0.3f) || (p2RvAxis < -0.3f && p2RhAxis < -0.3f)) {
+            p2R.Move( new Vector3(p2RhAxis, 0.0f, p2RvAxis) );
+        //}
     }
 }
