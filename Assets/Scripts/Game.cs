@@ -51,9 +51,47 @@ public class Game : MonoBehaviour
     }
 
     void Update() {
+
+        if(Input.GetAxis("Player1LeftTrigger") > 0.0f) {
+            Debug.Log("Player1LeftTrigger");
+            if(!p1L.IsBoostUsed()) {
+                p1L.Boost();
+            }
+        }
+
+        if(Input.GetAxis("Player1RightTrigger") > 0.0f) {
+            Debug.Log("Player1RightTrigger");
+            if(!p1R.IsBoostUsed()) {
+                p1R.Boost();
+            }
+        }
+
+        if(Input.GetAxis("Player2LeftTrigger") > 0.0f) {
+            Debug.Log("Player2LeftTrigger");
+            if(!p2L.IsBoostUsed()) {
+                p2L.Boost();
+            }
+        }
+
+        if(Input.GetAxis("Player2RightTrigger") > 0.0f) {
+            Debug.Log("Player2RightTrigger");
+            if(!p2R.IsBoostUsed()) {
+                p2R.Boost();
+            }
+        }
+
         p1L.Move( new Vector3(Input.GetAxis("Player1LeftHorizontal"), 0.0f,  Input.GetAxis("Player1LeftVertical")) );
         p1R.Move( new Vector3(Input.GetAxis("Player1RightHorizontal"), 0.0f, Input.GetAxis("Player1RightVertical")) );
         p2L.Move( new Vector3(Input.GetAxis("Player2LeftHorizontal"), 0.0f, Input.GetAxis("Player2LeftVertical")) );
         p2R.Move( new Vector3(Input.GetAxis("Player2RightHorizontal"), 0.0f, Input.GetAxis("Player2RightVertical")) );
+
+        if(Input.GetAxis("Player1LeftHorizontal") == 0.0f && Input.GetAxis("Player1LeftVertical") == 0.0f)
+            p1L.Move(new Vector3(0, 0, 0));
+        if(Input.GetAxis("Player1RightHorizontal") == 0.0f && Input.GetAxis("Player1RightVertical") == 0.0f)
+            p1R.Move(new Vector3(0, 0, 0));
+        if(Input.GetAxis("Player2LeftHorizontal") == 0.0f && Input.GetAxis("Player2LeftVertical") == 0.0f)
+            p2L.Move(new Vector3(0, 0, 0));
+        if(Input.GetAxis("Player2RightHorizontal") == 0.0f && Input.GetAxis("Player2RightVertical") == 0.0f)
+            p2R.Move(new Vector3(0, 0, 0));
     }
 }
