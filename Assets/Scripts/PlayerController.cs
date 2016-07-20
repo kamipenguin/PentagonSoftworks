@@ -1,42 +1,63 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
+// public enum PlayerEnum{Player1,Player2}
+// public enum CharacterEnum{Left,Right}
 
-    public Transform playerLeft;
-    public Transform playerRight;
-
-    public Transform ball;
+public class PlayerController : MonoBehaviour
+{
+    private Rigidbody rb;
+    private Vector3 movement;
+    private bool boostUsed = false;
     
-    public void pushLeft()
-    {
-        print("pushleft");
+    [SerializeField]
+    private float speed;
+
+    public bool canPush = false;
+
+    private Rigidbody ball;
+
+    public void Move(Vector3 movement) {
+        //Debug.Log(movement);
+        this.movement = movement * Time.deltaTime;
+        //transform.Translate(movement * Time.deltaTime * speed);
     }
 
-    public void pushRight()
-    {
-        print("pushright");
+    void Start() {
+        rb = GetComponent<Rigidbody>();
+        ball = GameObject.FindWithTag("Ball").GetComponent<Rigidbody>();
     }
 
-    public void pullLeft()
-    {
-        print("pullleft");
+    void FixedUpdate() {
+        rb.AddForce(movement * speed);
     }
 
-    public void pullRight()
-    {
-        print("pullright");
+    public bool IsBoostUsed() {
+        return boostUsed;
     }
 
-    public void moveLeft(Vector3 direction)
-    {
-        Rigidbody body = playerLeft.GetComponent<Rigidbody>();
-        body.position += direction;
+    public void Boost() {
+        Debug.Log("Boost");
+        speed *= 1.5f;
+        boostUsed = true;
     }
 
-    public void moveRight(Vector3 direction)
+    public void PushBall()
     {
-        Rigidbody body = playerRight.GetComponent<Rigidbody>();
-        body.position += direction;
+        ball.AddForce(this.transform.TransformDirection(Vector3.forward) * Time.deltaTime * 200);
+    }
+
+    void OnTriggerStay(Collider col) {
+
+        if (col.tag == "ball") {
+            Debug.Log("Shoot the ball");
+            canPush = true;
+        }
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.tag == "ball")
+            canPush = false;
     }
 }
