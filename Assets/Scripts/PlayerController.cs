@@ -6,22 +6,23 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    //public PlayerEnum myPlayer;
-    //[SerializeField]
-    //public CharacterEnum character;
-    // Use this for initialization
+    private Rigidbody rb;
+    private Vector3 movement;
+    
+    [SerializeField]
+    private float speed = 10000000.0f;
 
-    public void Move(Vector3 position)
-    {
-        this.gameObject.transform.position += position;
+    public void Move(Vector3 movement) {
+        //Debug.Log(movement);
+        this.movement = movement;
+        //transform.Translate(movement * Time.deltaTime * speed);
     }
 
     void Start() {
+        rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void FixedUpdate() {
+        rb.AddForce(movement * speed);
     }
 }
