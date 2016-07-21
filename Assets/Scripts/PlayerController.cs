@@ -6,23 +6,65 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody rb;
+    private Rigidbody rb, rbBall;
     private Vector3 movement;
-    
-    [SerializeField]
-    private float speed = 10000000.0f;
+    private bool boostUsed = false;
 
-    public void Move(Vector3 movement) {
-        //Debug.Log(movement);
-        this.movement = movement;
-        //transform.Translate(movement * Time.deltaTime * speed);
+    private bool ballControl = false;
+
+    [SerializeField]
+    private float speed;
+
+    public void Move(Vector3 movement)
+    {
+        this.movement = movement * Time.deltaTime;
     }
 
-    void Start() {
+    void Start()
+    {
         rb = GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         rb.AddForce(movement * speed);
+    }
+
+    public bool IsBoostUsed()
+    {
+        return boostUsed;
+    }
+
+    public bool IsBallInControl()
+    {
+        return ballControl;
+    }
+
+    public void Boost()
+    {
+        Debug.Log("Boost");
+        speed *= 1.5f;
+        boostUsed = true;
+    }
+
+    public void Shoot(Rigidbody ball)
+    {
+        ball.AddForce(transform.TransformDirection(Vector3.forward) * 50f);
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        if (col.tag == "Ball")
+        {
+            ballControl = true;
+        }
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        if (col.tag == "Ball")
+        {
+            ballControl = false;
+        }
     }
 }
