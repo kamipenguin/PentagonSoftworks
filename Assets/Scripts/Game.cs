@@ -29,8 +29,6 @@ public class Game : MonoBehaviour
 
     public GoalController goal1, goal2;
 
-    private bool boostStarted = false;
-
     [SerializeField]
     private Text winText;
 
@@ -47,9 +45,6 @@ public class Game : MonoBehaviour
 
     private static float timerVal = 181F;
     private static float timer;
-
-    private static float boostTimerVal = 1F;
-    private static float boostTimer;
 
     void Start()
     {
@@ -80,7 +75,6 @@ public class Game : MonoBehaviour
         p2R.GetComponent<Renderer>().material = p2r;
 
         timer = timerVal;
-        boostTimer = boostTimerVal;
         isPlayState = true;
     }
 
@@ -113,12 +107,12 @@ public class Game : MonoBehaviour
             if (goal1.GoalCount() < goal2.GoalCount())
             {
                 //player2 wins
-                winText.text = "Player 2 wins!";
+                winText.text = "Blue Player Wins!";
             }
             else if (goal1.GoalCount() > goal2.GoalCount())
             {
                 //player1 wins
-                winText.text = "Player 1 wins!";
+                winText.text = "Red Player Wins!";
             }
             else
             {
@@ -189,52 +183,25 @@ public class Game : MonoBehaviour
             p2R.Shoot(rbBall);
         }
 
-        if (Input.GetButtonDown("Player1LeftStickClick") || !boostStarted)
+        if (Input.GetButtonDown("Player1LeftStickClick") && !p1L.IsDashing)
         {
-            boostStarted = true;
             p1L.Boost();
-            boostTimer -= Time.deltaTime;
-            if (boostTimer < 0)
-            {
-                p1L.BoostEnded();
-                boostTimer = boostTimerVal;
-                boostStarted = false;
-            }
         }
 
-        if (Input.GetButtonDown("Player1RightStickClick"))
+        if (Input.GetButtonDown("Player1RightStickClick") && !p1R.IsDashing)
         {
             p1R.Boost();
-            boostTimer -= Time.deltaTime;
-            if (boostTimer < 0)
-            {
-                p1R.BoostEnded();
-                boostTimer = boostTimerVal;
-            }
         }
 
-        if (Input.GetButtonDown("Player2LeftStickClick"))
+        if (Input.GetButtonDown("Player2LeftStickClick") && !p2L.IsDashing)
         {
             p2L.Boost();
-            boostTimer -= Time.deltaTime;
-            if (boostTimer < 0)
-            {
-                p2L.BoostEnded();
-                boostTimer = boostTimerVal;
-            }
         }
 
-        if (Input.GetButtonDown("Player2RightStickClick"))
+        if (Input.GetButtonDown("Player2RightStickClick") && !p2R.IsDashing)
         {
             p2R.Boost();
-            boostTimer -= Time.deltaTime;
-            if (boostTimer < 0)
-            {
-                p2R.BoostEnded();
-                boostTimer = boostTimerVal;
-            }
         }
-
     }
 
     public void StartTimer()

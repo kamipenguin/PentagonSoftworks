@@ -15,12 +15,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float speed;
 
-    private float boostTimerVal = 1F;
-    private float boostTimer;
-
-    private bool startBoost = false;
-
     private Vector3 movementSpeed;
+
+    private float dashTime;
+    private float dashTimeVal = 1f;
+
+    private bool isDashing = false;
 
     public void Move(Vector3 movement)
     {
@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        boostTimer = boostTimerVal;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -46,11 +45,19 @@ public class PlayerController : MonoBehaviour
 
     public void Boost()
     {
-        speed *= 2.0f;
+        isDashing = true;
+        dashTime = dashTimeVal;
+        if (dashTime > 0)
+        {
+            speed *= 2.0f;
+            dashTime -= Time.deltaTime;
+        }
+        BoostEnded();
     }
 
     public void BoostEnded()
     {
+        isDashing = false;
         speed /= 2.0f;
     }
 
@@ -80,8 +87,8 @@ public class PlayerController : MonoBehaviour
         return movementSpeed;
     }
 
-    public bool BoostStarted
+    public bool IsDashing
     {
-        set { startBoost = value; }
+        get { return isDashing; }
     }
 }
