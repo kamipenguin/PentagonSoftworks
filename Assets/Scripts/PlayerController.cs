@@ -1,79 +1,95 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Runtime.Remoting.Messaging;
 
 // public enum PlayerEnum{Player1,Player2}
 // public enum CharacterEnum{Left,Right}
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody rb;
+    private Rigidbody rb, rbBall;
     private Vector3 movement;
-    private bool boostUsed = false;
-    private float rotation = 0;
-    
+
+    private bool ballControl = false;
+
     [SerializeField]
     private float speed;
 
     [SerializeField]
-    private Transform mascot;
+    private Animation mascotAnim;
 
-    private Animation anim;
+    private float boostTimerVal = 1F;
+    private float boostTimer;
 
-    public bool canPush = false;
+    private bool startBoost = false;
 
-    private Rigidbody ball;
+    private Vector3 movementSpeed;
 
-    public void Move(Vector3 movement, float rotation) {
-        //Debug.Log(movement);
-        this.movement = movement * Time.deltaTime;
-        this.rotation += rotation * Time.deltaTime;
-        //transform.Translate(movement * Time.deltaTime * speed);
-    }
-
-    void Start() {
-        rb = GetComponent<Rigidbody>();
-        ball = GameObject.FindWithTag("Ball").GetComponent<Rigidbody>();
-        rotation = transform.eulerAngles.y;
-
-        anim = mascot.GetComponent<Animation>();
-    }
-
-    void FixedUpdate() {
-        rb.AddForce(movement * speed);
-        transform.rotation = Quaternion.Euler(0, rotation, 0);
-
-        if (movement == Vector3.zero)
-            anim.CrossFade("Idle Cycle");
-        else
-            anim.CrossFade("Run Cycle");
-    }
-
-    public bool IsBoostUsed() {
-        return boostUsed;
-    }
-
-    public void Boost() {
-        Debug.Log("Boost");
-        speed *= 1.5f;
-        boostUsed = true;
-    }
-
-    public void PushBall()
+    public void Move(Vector3 movement)
     {
-        ball.AddForce(this.transform.TransformDirection(Vector3.forward) * Time.deltaTime * 200);
+        this.movement = movement * Time.deltaTime;
     }
 
-    void OnTriggerStay(Collider col) {
+    void Start()
+    {
+        boostTimer = boostTimerVal;
+        rb = GetComponent<Rigidbody>();
+    }
 
-        if (col.tag == "ball") {
-            Debug.Log("Shoot the ball");
-            canPush = true;
+    void FixedUpdate()
+    {
+        rb.AddForce(movement * speed);
+        movementSpeed = movement*speed;
+
+        if (movementSpeed == Vector3.zero)
+            mascotAnim.CrossFade("Idle Cycle");
+        else
+            mascotAnim.CrossFade("Run Cycle");
+    }
+
+    public bool IsBallInControl()
+    {
+        return ballControl;
+    }
+
+    public void Boost()
+    {
+        speed *= 2.0f;
+    }
+
+    public void BoostEnded()
+    {
+        speed /= 2.0f;
+    }
+
+    public void Shoot(Rigidbody ball)
+    {
+        ball.AddForce(transform.TransformDirection(Vector3.forward) * 50f);
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        if (col.tag == "Ball")
+        {
+            ballControl = true;
         }
     }
 
     void OnTriggerExit(Collider col)
     {
-        if (col.tag == "ball")
-            canPush = false;
+        if (col.tag == "Ball")
+        {
+            ballControl = false;
+        }
+    }
+
+    public Vector3 MovementSpeed()
+    {
+        return movementSpeed;
+    }
+
+    public bool BoostStarted
+    {
+        set { startBoost = value; }
     }
 }
