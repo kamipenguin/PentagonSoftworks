@@ -32,9 +32,6 @@ public class Game : MonoBehaviour
     [SerializeField]
     private Text winText;
 
-    [SerializeField]
-    private Text stats;
-
     //timer variables
     [SerializeField]
     private Text timerText;
@@ -87,11 +84,6 @@ public class Game : MonoBehaviour
 
     void Update()
     {
-        stats.text = "Player1Left: " + p1L.MovementSpeed();
-        stats.text += "\nPlayer1Right: " + p1R.MovementSpeed();
-        stats.text += "\nPlayer2Left: " + p2L.MovementSpeed();
-        stats.text += "\nPlayer2Right: " + p2R.MovementSpeed();
-
         if (isPlayState)
         {
             PlayerInput();
