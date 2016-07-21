@@ -29,8 +29,13 @@ public class Game : MonoBehaviour
 
     public GoalController goal1, goal2;
 
+    private bool boostStarted = false;
+
     [SerializeField]
     private Text winText;
+
+    [SerializeField]
+    private Text stats;
 
     //timer variables
     [SerializeField]
@@ -42,6 +47,9 @@ public class Game : MonoBehaviour
 
     private static float timerVal = 181F;
     private static float timer;
+
+    private static float boostTimerVal = 1F;
+    private static float boostTimer;
 
     void Start()
     {
@@ -72,7 +80,7 @@ public class Game : MonoBehaviour
         p2R.GetComponent<Renderer>().material = p2r;
 
         timer = timerVal;
-
+        boostTimer = boostTimerVal;
         isPlayState = true;
     }
 
@@ -83,7 +91,13 @@ public class Game : MonoBehaviour
         player2Right.transform.position = player2RightSpawn.position;
     }
 
-    void Update() {
+    void Update()
+    {
+        stats.text = "Player1Left: " + p1L.MovementSpeed();
+        stats.text += "\nPlayer1Right: " + p1R.MovementSpeed();
+        stats.text += "\nPlayer2Left: " + p2L.MovementSpeed();
+        stats.text += "\nPlayer2Right: " + p2R.MovementSpeed();
+
         if (isPlayState)
         {
             PlayerInput();
@@ -113,7 +127,7 @@ public class Game : MonoBehaviour
         }
 
         //reset game when space is pressed
-        if (Input.GetKey("space"))
+        if (Input.GetButtonDown("Player1Back") || Input.GetButtonDown("Player2Back"))
         {
             Application.LoadLevel(0);
         }
@@ -174,6 +188,53 @@ public class Game : MonoBehaviour
         {
             p2R.Shoot(rbBall);
         }
+
+        if (Input.GetButtonDown("Player1LeftStickClick") || !boostStarted)
+        {
+            boostStarted = true;
+            p1L.Boost();
+            boostTimer -= Time.deltaTime;
+            if (boostTimer < 0)
+            {
+                p1L.BoostEnded();
+                boostTimer = boostTimerVal;
+                boostStarted = false;
+            }
+        }
+
+        if (Input.GetButtonDown("Player1RightStickClick"))
+        {
+            p1R.Boost();
+            boostTimer -= Time.deltaTime;
+            if (boostTimer < 0)
+            {
+                p1R.BoostEnded();
+                boostTimer = boostTimerVal;
+            }
+        }
+
+        if (Input.GetButtonDown("Player2LeftStickClick"))
+        {
+            p2L.Boost();
+            boostTimer -= Time.deltaTime;
+            if (boostTimer < 0)
+            {
+                p2L.BoostEnded();
+                boostTimer = boostTimerVal;
+            }
+        }
+
+        if (Input.GetButtonDown("Player2RightStickClick"))
+        {
+            p2R.Boost();
+            boostTimer -= Time.deltaTime;
+            if (boostTimer < 0)
+            {
+                p2R.BoostEnded();
+                boostTimer = boostTimerVal;
+            }
+        }
+
     }
 
     public void StartTimer()
