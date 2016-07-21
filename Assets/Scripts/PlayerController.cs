@@ -9,27 +9,43 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Vector3 movement;
     private bool boostUsed = false;
+    private float rotation = 0;
     
     [SerializeField]
     private float speed;
+
+    [SerializeField]
+    private Transform mascot;
+
+    private Animation anim;
 
     public bool canPush = false;
 
     private Rigidbody ball;
 
-    public void Move(Vector3 movement) {
+    public void Move(Vector3 movement, float rotation) {
         //Debug.Log(movement);
         this.movement = movement * Time.deltaTime;
+        this.rotation += rotation * Time.deltaTime;
         //transform.Translate(movement * Time.deltaTime * speed);
     }
 
     void Start() {
         rb = GetComponent<Rigidbody>();
         ball = GameObject.FindWithTag("Ball").GetComponent<Rigidbody>();
+        rotation = transform.eulerAngles.y;
+
+        anim = mascot.GetComponent<Animation>();
     }
 
     void FixedUpdate() {
         rb.AddForce(movement * speed);
+        transform.rotation = Quaternion.Euler(0, rotation, 0);
+
+        if (movement == Vector3.zero)
+            anim.CrossFade("Idle Cycle");
+        else
+            anim.CrossFade("Run Cycle");
     }
 
     public bool IsBoostUsed() {

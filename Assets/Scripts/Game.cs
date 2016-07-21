@@ -34,11 +34,11 @@ public class Game : MonoBehaviour
         p1R = player1Right.GetComponent<PlayerController>();
 
         // Create the left character of player 2
-        player2Left = (GameObject) Instantiate(Resources.Load("player"), player2LeftSpawn.position, Quaternion.identity);
+        player2Left = (GameObject) Instantiate(Resources.Load("player"), player2LeftSpawn.position, Quaternion.Euler(0, 180, 0));
         p2L = player2Left.GetComponent<PlayerController>();
 
         // Create the right character of player 2
-        player2Right = (GameObject) Instantiate(Resources.Load("player"), player2RightSpawn.position, Quaternion.identity);
+        player2Right = (GameObject) Instantiate(Resources.Load("player"), player2RightSpawn.position, Quaternion.Euler(0, 180, 0));
         p2R = player2Right.GetComponent<PlayerController>();
     }
 
@@ -79,19 +79,19 @@ public class Game : MonoBehaviour
             }
         }
 
-        p1L.Move( new Vector3(Input.GetAxis("Player1LeftHorizontal"), 0.0f,  Input.GetAxis("Player1LeftVertical")) );
-        p1R.Move( new Vector3(Input.GetAxis("Player1RightHorizontal"), 0.0f, Input.GetAxis("Player1RightVertical")) );
-        p2L.Move( new Vector3(Input.GetAxis("Player2LeftHorizontal"), 0.0f, Input.GetAxis("Player2LeftVertical")) );
-        p2R.Move( new Vector3(Input.GetAxis("Player2RightHorizontal"), 0.0f, Input.GetAxis("Player2RightVertical")) );
+        p1L.Move( new Vector3(Input.GetAxis("Player1LeftHorizontal"), 0.0f,  Input.GetAxis("Player1LeftVertical")), Input.GetAxis("Player1LeftHorizontal"));
+        p1R.Move( new Vector3(Input.GetAxis("Player1RightHorizontal"), 0.0f, Input.GetAxis("Player1RightVertical")), Input.GetAxis("Player1RightHorizontal"));
+        p2L.Move( new Vector3(Input.GetAxis("Player2LeftHorizontal"), 0.0f, Input.GetAxis("Player2LeftVertical")), Input.GetAxis("Player2LeftHorizontal"));
+        p2R.Move( new Vector3(Input.GetAxis("Player2RightHorizontal"), 0.0f, Input.GetAxis("Player2RightVertical")), Input.GetAxis("Player2RightHorizontal"));
 
         if(Input.GetAxis("Player1LeftHorizontal") == 0.0f && Input.GetAxis("Player1LeftVertical") == 0.0f)
-            p1L.Move(new Vector3(0, 0, 0));
+            p1L.Move(new Vector3(0, 0, 0),0);
         if(Input.GetAxis("Player1RightHorizontal") == 0.0f && Input.GetAxis("Player1RightVertical") == 0.0f)
-            p1R.Move(new Vector3(0, 0, 0));
+            p1R.Move(new Vector3(0, 0, 0),0);
         if(Input.GetAxis("Player2LeftHorizontal") == 0.0f && Input.GetAxis("Player2LeftVertical") == 0.0f)
-            p2L.Move(new Vector3(0, 0, 0));
+            p2L.Move(new Vector3(0, 0, 0),0);
         if(Input.GetAxis("Player2RightHorizontal") == 0.0f && Input.GetAxis("Player2RightVertical") == 0.0f)
-            p2R.Move(new Vector3(0, 0, 0));
+            p2R.Move(new Vector3(0, 0, 0),0);
 
         if (Input.GetKey("joystick 1 button 4"))
         {
