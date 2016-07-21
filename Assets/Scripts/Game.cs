@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class Game : MonoBehaviour
 {
     private GameObject ball;
+    private Rigidbody rbBall;
+
     private GameObject player1Left, player1Right, player2Left, player2Right;
     private PlayerController p1Left, p1Right, p2Left, p2Right;
 
@@ -19,7 +21,7 @@ public class Game : MonoBehaviour
 
     private PlayerController p1L, p1R, p2L, p2R;
 
-    private float p1LhAxis, p1LvAxis, p1RhAxis, p1RvAxis, p2LhAxis, p2LvAxis, p2RhAxis, p2RvAxis;
+    private float p1LhAxis, p1LvAxis, p1RhAxis, p1RvAxis, p2LhAxis, p2LvAxis, p2RhAxis, p2RvAxis, p1LTrigger, p1RTriggerm p2LTrigger, p2RTrigger;
 
     void Start()
     {
@@ -27,6 +29,7 @@ public class Game : MonoBehaviour
         ballSpawnPositions = GameObject.FindGameObjectsWithTag("BallSpawnPoint");
         ballSpawnPos = ballSpawnPositions[(int)Random.Range(0f, 1f)].transform.position;
         ball = (GameObject) Instantiate(Resources.Load("ball"), ballSpawnPos, Quaternion.identity);
+        rbBall = ball.GetComponent<Rigidbody>();
 
         // Create the left character of player 1
         player1Left = (GameObject) Instantiate(Resources.Load("player"), player1LeftSpawn.position, Quaternion.identity);
@@ -62,27 +65,37 @@ public class Game : MonoBehaviour
         p2RhAxis = Input.GetAxis("Player2RightHorizontal");
         p2RvAxis = Input.GetAxis("Player2RightVertical");
 
-        Debug.Log("Player1LeftHorizontal:" + p1LhAxis);
-        Debug.Log("Player1LeftVertical:" + p1LvAxis);
-        Debug.Log("Player1RightHorizontal:" + p1RhAxis);
-        Debug.Log("Player1RightVertical:" + p1RvAxis);
-        Debug.Log("Player2LeftHorizontal:" + p2LhAxis);
-        Debug.Log("Player2LeftVertical:" + p2LvAxis);
-        Debug.Log("Player2RightHorizontal:" + p2RhAxis);
-        Debug.Log("Player2RightHorizontal:" + p2RvAxis);
+        p1LTrigger = Input.GetAxis("Player1LeftTrigger");
+        p1RTrigger = Input.GetAxis("Player1RightTrigger");
 
-        // Deadzone
-        //if((p1LvAxis > 0.3f && p1LhAxis > 0.3f) || (p1LvAxis < -0.3f && p1LhAxis < -0.3f)) {
-            p1L.Move( new Vector3(p1LhAxis, 0.0f,  p1LvAxis) );
-        //}
-        //if((p1RvAxis > 0.3f && p1RhAxis > 0.3f) || (p1RvAxis < -0.3f && p1RhAxis < -0.3f)) {
-            p1R.Move( new Vector3(p1RhAxis, 0.0f, p1RvAxis) );
-        //}
-        //if((p2LvAxis > 0.3f && p2LhAxis > 0.3f) || (p2LvAxis < -0.3f && p2LhAxis < -0.3f)) {
-            p2L.Move( new Vector3(p2LhAxis, 0.0f, p2LvAxis) );
-        //}
-        //if((p2RvAxis > 0.3f && p2RhAxis > 0.3f) || (p2RvAxis < -0.3f && p2RhAxis < -0.3f)) {
-            p2R.Move( new Vector3(p2RhAxis, 0.0f, p2RvAxis) );
-        //}
+        p2LTrigger = Input.GetAxis("Player2LeftTrigger");
+        p2RTrigger = Input.GetAxis("Player2RightTrigger");
+
+        //Debug.Log("Player1LeftHorizontal:" + p1LhAxis);
+        //Debug.Log("Player1LeftVertical:" + p1LvAxis);
+        //Debug.Log("Player1RightHorizontal:" + p1RhAxis);
+        //Debug.Log("Player1RightVertical:" + p1RvAxis);
+        //Debug.Log("Player2LeftHorizontal:" + p2LhAxis);
+        //Debug.Log("Player2LeftVertical:" + p2LvAxis);
+        //Debug.Log("Player2RightHorizontal:" + p2RhAxis);
+        //Debug.Log("Player2RightHorizontal:" + p2RvAxis);
+
+        p1L.Move( new Vector3(p1LhAxis, 0.0f,  p1LvAxis) );
+        p1R.Move( new Vector3(p1RhAxis, 0.0f, p1RvAxis) );
+        p2L.Move( new Vector3(p2LhAxis, 0.0f, p2LvAxis) );
+        p2R.Move( new Vector3(p2RhAxis, 0.0f, p2RvAxis) );
+
+        if(p1LTrigger != 0f && p1L.IsBallInControl()) {
+            p1L.Shoot(rbBall);
+        }
+        if(p1LTrigger != 0f && p1R.IsBallInControl()) {
+            p1L.Shoot(rbBall);
+        }
+        if(p1LTrigger != 0f && p2L.IsBallInControl()) {
+            p1L.Shoot(rbBall);
+        }
+        if(p1LTrigger != 0f && p2R.IsBallInControl()) {
+            p1L.Shoot(rbBall);
+        }
     }
 }

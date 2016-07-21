@@ -6,9 +6,11 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody rb;
+    private Rigidbody rb, rbBall;
     private Vector3 movement;
     private bool boostUsed = false;
+
+    private bool ballControl = false;
     
     [SerializeField]
     private float speed;
@@ -29,22 +31,29 @@ public class PlayerController : MonoBehaviour
         return boostUsed;
     }
 
+    public bool IsBallInControl() {
+        return ballControl;
+    }
+
     public void Boost() {
         Debug.Log("Boost");
         speed *= 1.5f;
         boostUsed = true;
     }
 
-    void OnTriggerStay(Collider col) {
-        if(col.tag == "ball") {
-            Debug.Log("Shoot the ball");
-        }
+    public void Shoot(Rigidbody ball) {
+        ball.AddForce(transform.forward * 10f);
+    }
 
-        /*
-        if(Input.GetAxis("Player1LeftTrigger") > 0.0f || Input.GetAxis("Player1RightTrigger") > 0.0f || Input.GetAxis("Player2LeftTrigger") > 0.0f || Input.GetAxis("Player2RightTrigger") > 0.0f) {
-            if(col.tag == "ball") {
-                Debug.Log("Shoot the ball");
-            }
-        }*/
+    void OnTriggerStay(Collider col) {
+        if(col.tag == "Ball") {
+            ballControl = true;
+        }
+    }
+
+    void OnTriggerExit(Collider col) {
+        if(col.tag == "Ball") {
+            ballControl = false;
+        }
     }
 }
