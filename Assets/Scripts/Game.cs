@@ -21,7 +21,7 @@ public class Game : MonoBehaviour
 
     private PlayerController p1L, p1R, p2L, p2R;
 
-    private float p1LhAxis, p1LvAxis, p1RhAxis, p1RvAxis, p2LhAxis, p2LvAxis, p2RhAxis, p2RvAxis, p1LTrigger, p1RTriggerm p2LTrigger, p2RTrigger;
+    private float p1LhAxis, p1LvAxis, p1RhAxis, p1RvAxis, p2LhAxis, p2LvAxis, p2RhAxis, p2RvAxis, p1LTrigger, p1RTrigger, p2LTrigger, p2RTrigger;
 
     void Start()
     {
@@ -88,14 +88,14 @@ public class Game : MonoBehaviour
         if(p1LTrigger != 0f && p1L.IsBallInControl()) {
             p1L.Shoot(rbBall);
         }
-        if(p1LTrigger != 0f && p1R.IsBallInControl()) {
+        if(p1RTrigger != 0f && p1R.IsBallInControl()) {
             p1L.Shoot(rbBall);
         }
         if(p1LTrigger != 0f && p2L.IsBallInControl()) {
-            p1L.Shoot(rbBall);
+            p2L.Shoot(rbBall);
         }
         if(p1LTrigger != 0f && p2R.IsBallInControl()) {
-            p1L.Shoot(rbBall);
+            p2R.Shoot(rbBall);
         }
     }
 }
