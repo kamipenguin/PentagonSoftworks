@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 movementSpeed;
 
     private float dashTime;
-    private float dashTimeVal = 1f;
+    private float dashTimeVal = 0.5;
 
     private bool isDashing = false;
 
@@ -40,6 +40,16 @@ public class PlayerController : MonoBehaviour
         movementSpeed = movement*speed;
     }
 
+    void Update()
+    {
+        if(dashTime > 0) 
+        {
+            dashTime -= Time.deltaTime;
+        }
+        else if (isDashing)
+            BoostEnded();
+    }
+
     public bool IsBallInControl()
     {
         return ballControl;
@@ -49,18 +59,13 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
         dashTime = dashTimeVal;
-        if (dashTime > 0)
-        {
-            speed *= 2.0f;
-            dashTime -= Time.deltaTime;
-        }
-        BoostEnded();
+        speed *= 2.6f;
     }
 
     public void BoostEnded()
     {
         isDashing = false;
-        speed /= 2.0f;
+        speed /= 2.6f;
     }
 
     public void Shoot(Rigidbody ball)
