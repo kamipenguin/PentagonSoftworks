@@ -15,12 +15,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float speed;
 
+    [SerializeField]
+    private Animation mascotAnim;
+
     private Vector3 movementSpeed;
 
     private float dashTime;
-    private float dashTimeVal = 0.5f;
+    private float dashTimeVal = 0.1f;
 
     private bool isDashing = false;
+
+    private float damping = 2f;
+
+    private float rot;
 
     public void Move(Vector3 movement)
     {
@@ -30,22 +37,31 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        mascotAnim["Run Cycle"].speed = 2.5f;
     }
 
     void FixedUpdate()
     {
         rb.AddForce(movement * speed);
         movementSpeed = movement*speed;
+
+        if (movementSpeed == Vector3.zero)
+            mascotAnim.CrossFade("Idle Cycle");
+        else
+            mascotAnim.CrossFade("Run Cycle");
     }
 
     void Update()
     {
-        if (dashTime > 0)
-        {
-            dashTime -= Time.deltaTime;
+        if(isDashing) {
+            if(dashTime > 0f) 
+            {
+                dashTime -= Time.deltaTime;
+            }
+            else if(dashTime <= 0f) {
+                BoostEnded();
+            }
         }
-        else if (isDashing)
-            BoostEnded();
     }
 
     public bool IsBallInControl()
@@ -57,13 +73,13 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
         dashTime = dashTimeVal;
-        speed *= 2.6f;
+        speed *= 3f;
     }
 
     public void BoostEnded()
     {
         isDashing = false;
-        speed /= 2.6f;
+        speed /= 3f;
     }
 
     public void Shoot(Rigidbody ball)
@@ -95,5 +111,14 @@ public class PlayerController : MonoBehaviour
     public bool IsDashing
     {
         get { return isDashing; }
+    }
+
+    public void LookAt(Vector3 position) {
+        
+        Vector3 lookPos = position - this.transform.position;
+        lookPos.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(lookPos);
+        this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, Time.deltaTime * damping);
+        
     }
 }
