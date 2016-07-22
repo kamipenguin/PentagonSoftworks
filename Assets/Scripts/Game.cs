@@ -2,8 +2,16 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+public enum Orientation {
+    Horizontal,
+    Vertical
+}
+
 public class Game : MonoBehaviour
 {
+    [SerializeField]
+    private Orientation orientation;
+
     [SerializeField]
     private Material p1Mat, p2Mat;
 
@@ -177,10 +185,22 @@ public class Game : MonoBehaviour
         p2L.LookAt(ball.transform.position);
         p2R.LookAt(ball.transform.position);
 
-        p1L.Move(new Vector3(p1LhAxis, 0.0f, p1LvAxis));
-        p1R.Move(new Vector3(p1RhAxis, 0.0f, p1RvAxis));
-        p2L.Move(new Vector3(p2LhAxis, 0.0f, p2LvAxis));
-        p2R.Move(new Vector3(p2RhAxis, 0.0f, p2RvAxis));
+        switch(orientation)
+        {
+            case Orientation.Horizontal:
+                p1L.Move(new Vector3(p1LvAxis * -1, 0.0f, p1LhAxis));
+                p1R.Move(new Vector3(p1RvAxis * -1, 0.0f, p1RhAxis));
+                p2L.Move(new Vector3(p2LvAxis * -1, 0.0f, p2LhAxis));
+                p2R.Move(new Vector3(p2RvAxis * -1, 0.0f, p2RhAxis));
+            break;
+            case Orientation.Vertical:
+                p1L.Move(new Vector3(p1LhAxis, 0.0f, p1LvAxis));
+                p1R.Move(new Vector3(p1RhAxis, 0.0f, p1RvAxis));
+                p2L.Move(new Vector3(p2LhAxis, 0.0f, p2LvAxis));
+                p2R.Move(new Vector3(p2RhAxis, 0.0f, p2RvAxis));
+            break;
+        }
+
 
 
         if (p1LTrigger != 0f && p1L.IsBallInControl())
