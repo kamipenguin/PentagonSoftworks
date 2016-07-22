@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float speed;
 
+    [SerializeField]
+    private Animation mascotAnim;
+
     private Vector3 movementSpeed;
 
     private float dashTime;
@@ -24,6 +27,8 @@ public class PlayerController : MonoBehaviour
 
     private float damping = 2f;
 
+    private float rot;
+
     public void Move(Vector3 movement)
     {
         this.movement = movement * Time.deltaTime;
@@ -32,12 +37,18 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        mascotAnim["Run Cycle"].speed = 2.5f;
     }
 
     void FixedUpdate()
     {
         rb.AddForce(movement * speed);
         movementSpeed = movement*speed;
+
+        if (movementSpeed == Vector3.zero)
+            mascotAnim.CrossFade("Idle Cycle");
+        else
+            mascotAnim.CrossFade("Run Cycle");
     }
 
     void Update()
@@ -100,7 +111,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public void LookAt(Vector3 position) {
-        Vector3 lookPos = position - this.transform.position;
+        Vector3 lookPos = (this.transform.position + position) - this.transform.position;
         lookPos.y = 0;
         Quaternion rotation = Quaternion.LookRotation(lookPos);
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rotation, Time.deltaTime * damping); 

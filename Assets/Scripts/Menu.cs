@@ -53,11 +53,30 @@ public class Menu : MonoBehaviour {
 		if(Input.GetButtonDown("Mac_A")) {
 			SceneManager.LoadScene((int)map, LoadSceneMode.Additive);
 		}
+
+
 	}
 
 	void InputWindows() {
-		//
-	}
+        //
+        if (Input.GetAxis("d-pad_windows_left") != 0)
+        {
+            Debug.Log("Toggle");
+            ToggleGameModes();
+        }
+
+        //if(Input.GetKey(""))
+
+        /*else if (Input.GetButtonDown("D-PadRightMac"))
+        {
+            Debug.Log("Toggle");
+            ToggleGameModes();
+        }*/
+        if (Input.GetButtonDown("Mac_A"))
+        {
+            SceneManager.LoadScene((int)map, LoadSceneMode.Additive);
+        }
+    }
 
 	void ToggleGameModes() {
 		switch(map) {

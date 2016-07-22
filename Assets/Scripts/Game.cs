@@ -54,6 +54,11 @@ public class Game : MonoBehaviour
     private static float timerVal = 181F;
     private static float timer;
 
+    private Vector3 directionPlayer1Left; 
+    private Vector3 directionPlayer1right; 
+    private Vector3 directionPlayer2Left; 
+    private Vector3 directionPlayer2right; 
+
     void Start()
     {
         // Create the ball at either the player 1 side or player 2 side of the field
@@ -63,27 +68,27 @@ public class Game : MonoBehaviour
         // Create the left character of player 1
         player1Left = (GameObject) Instantiate(Resources.Load("character"), player1LeftSpawn.position, Quaternion.identity);
         p1L = player1Left.GetComponent<PlayerController>();
-        p1L.GetComponent<Renderer>().material = p1Mat;
+        //p1L.GetComponent<Renderer>().material = p1Mat;
         p1L.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = leftIcon;
 
         // Create the right character of player 1
         player1Right = (GameObject) Instantiate(Resources.Load("character"), player1RightSpawn.position, Quaternion.identity);
         p1R = player1Right.GetComponent<PlayerController>();
-        p1R.GetComponent<Renderer>().material = p1Mat;
+        //p1R.GetComponent<Renderer>().material = p1Mat;
         p1R.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = rightIcon;
 
         // Create the left character of player 2
-        player2Left = (GameObject) Instantiate(Resources.Load("character"), player2LeftSpawn.position, Quaternion.identity);
+        player2Left = (GameObject) Instantiate(Resources.Load("character2"), player2LeftSpawn.position, Quaternion.identity);
         p2L = player2Left.GetComponent<PlayerController>();
-        p2L.GetComponent<Renderer>().material = p2Mat;
+        //p2L.GetComponent<Renderer>().material = p2Mat;
 
         SpriteRenderer p2LSpriteRenderer = p2L.transform.GetChild(0).GetComponent<SpriteRenderer>();
         p2LSpriteRenderer.sprite = leftIcon;
 
         // Create the right character of player 2
-        player2Right = (GameObject) Instantiate(Resources.Load("character"), player2RightSpawn.position, Quaternion.identity);
+        player2Right = (GameObject) Instantiate(Resources.Load("character2"), player2RightSpawn.position, Quaternion.identity);
         p2R = player2Right.GetComponent<PlayerController>();
-        p2R.GetComponent<Renderer>().material = p2Mat;
+        //p2R.GetComponent<Renderer>().material = p2Mat;
 
         SpriteRenderer p2RSpriteRenderer = p2R.transform.GetChild(0).GetComponent<SpriteRenderer>();
         p2RSpriteRenderer.sprite = rightIcon;
@@ -107,10 +112,10 @@ public class Game : MonoBehaviour
     void Update()
     {
 
-        stats.text = "Player1Left: " + p1L.MovementSpeed();
-        stats.text += "\nPlayer1Right: " + p1R.MovementSpeed();
-        stats.text += "\nPlayer2Left: " + p2L.MovementSpeed();
-        stats.text += "\nPlayer2Right: " + p2R.MovementSpeed();
+        /*stats.text = "Player1Left: " + p1L.IsBallInControl();
+        stats.text += "\nPlayer1Right: " + p1R.IsBallInControl();
+        stats.text += "\nPlayer2Left: " + p2L.IsBallInControl();
+        stats.text += "\nPlayer2Right: " + p2R.IsBallInControl();*/
 
         if (isPlayState)
         {
@@ -158,6 +163,8 @@ public class Game : MonoBehaviour
         p2RhAxis = Input.GetAxis("Player2RightHorizontal");
         p2RvAxis = Input.GetAxis("Player2RightVertical");
 
+
+
         /*Debug.Log("Player1LeftHorizontal:" + p1LhAxis);
         Debug.Log("Player1LeftVertical:" + p1LvAxis);
         Debug.Log("Player1RightHorizontal:" + p1RhAxis);
@@ -174,31 +181,53 @@ public class Game : MonoBehaviour
         p2LTrigger = Input.GetAxis("Player2LeftTrigger");
         p2RTrigger = Input.GetAxis("Player2RightTrigger");
 
+        stats.text = "Player1Left: " + p1LTrigger;
+        stats.text += "\nPlayer1Right: " + p1RTrigger;
+        stats.text += "\nPlayer2Left: " + p2LTrigger;
+        stats.text += "\nPlayer2Right: " + p2RTrigger;
+
         // p1L.transform.LookAt(new Vector3(ball.transform.position.x, 3f, ball.transform.position.z));
         // p1R.transform.LookAt(new Vector3(ball.transform.position.x, 3f, ball.transform.position.z));
         // p2L.transform.LookAt(new Vector3(ball.transform.position.x, 3f, ball.transform.position.z));
         // p2R.transform.LookAt(new Vector3(ball.transform.position.x, 3f, ball.transform.position.z));
 
-        p1L.LookAt(ball.transform.position);
-        p1R.LookAt(ball.transform.position);
-        p2L.LookAt(ball.transform.position);
-        p2R.LookAt(ball.transform.position);
-
-        switch(orientation)
+        switch (orientation)
         {
             case Orientation.Horizontal:
-                p1L.Move(new Vector3(p1LvAxis * -1, 0.0f, p1LhAxis));
-                p1R.Move(new Vector3(p1RvAxis * -1, 0.0f, p1RhAxis));
-                p2L.Move(new Vector3(p2LvAxis * -1, 0.0f, p2LhAxis));
-                p2R.Move(new Vector3(p2RvAxis * -1, 0.0f, p2RhAxis));
+
+                directionPlayer1Left = new Vector3(p1LvAxis, 0, p1LhAxis);
+                directionPlayer1right = new Vector3(p1RvAxis, 0, p1RhAxis); 
+                 directionPlayer2Left = new Vector3(p2LvAxis, 0, p2LhAxis);
+                directionPlayer2right = new Vector3(p2RvAxis, 0, p2RhAxis);
+
+                p1L.Move(new Vector3(p1LvAxis, 0.0f, p1LhAxis));
+                p1R.Move(new Vector3(p1RvAxis, 0.0f, p1RhAxis));
+                p2L.Move(new Vector3(p2LvAxis, 0.0f, p2LhAxis));
+                p2R.Move(new Vector3(p2RvAxis, 0.0f, p2RhAxis));
             break;
             case Orientation.Vertical:
-                p1L.Move(new Vector3(p1LhAxis, 0.0f, p1LvAxis));
-                p1R.Move(new Vector3(p1RhAxis, 0.0f, p1RvAxis));
-                p2L.Move(new Vector3(p2LhAxis, 0.0f, p2LvAxis));
-                p2R.Move(new Vector3(p2RhAxis, 0.0f, p2RvAxis));
+
+                directionPlayer1Left = new Vector3(p1LhAxis, 0, -p1LvAxis);
+                directionPlayer1right = new Vector3(p1RhAxis, 0, -p1RvAxis);
+                directionPlayer2Left = new Vector3(p2LhAxis, 0, -p2LvAxis);
+                directionPlayer2right = new Vector3(p2RhAxis, 0, -p2RvAxis);
+
+                p1L.Move(new Vector3(p1LhAxis, 0.0f, -p1LvAxis));
+                p1R.Move(new Vector3(p1RhAxis, 0.0f, -p1RvAxis));
+                p2L.Move(new Vector3(p2LhAxis, 0.0f, -p2LvAxis));
+                p2R.Move(new Vector3(p2RhAxis, 0.0f, -p2RvAxis));
             break;
         }
+
+        directionPlayer1Left.Normalize();
+        directionPlayer1right.Normalize();
+        directionPlayer2Left.Normalize();
+        directionPlayer2right.Normalize();
+
+        p1L.LookAt(directionPlayer1Left);
+        p1R.LookAt(directionPlayer1right);
+        p2L.LookAt(directionPlayer2Left);
+        p2R.LookAt(directionPlayer2right);
 
         if (p1LTrigger != 0f && p1L.IsBallInControl())
         {
