@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 movementSpeed;
 
     private float dashTime;
-    private float dashTimeVal = 0.5;
+    private float dashTimeVal = 0.5f;
 
     private bool isDashing = false;
 
