@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/GameScene.unity
+- path: Assets/Circular_Game_Mode_Vertical.unity
   isLoaded: 1
   isActive: 1

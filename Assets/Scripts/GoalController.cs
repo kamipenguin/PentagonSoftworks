@@ -18,23 +18,24 @@ public class GoalController : MonoBehaviour
         SetGoalText();
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Ball"))
         {
             goalCount++;
             SetGoalText();
             Destroy(other.gameObject);
-            if (other.gameObject.transform.position.z < -10)
+            if (other.gameObject.transform.position.z < 0)
             {
-
-                Instantiate(Resources.Load("ball"), game.BallSpawnPos1(), Quaternion.identity);
+                // game.ball = (GameObject)Instantiate(Resources.Load("ball"), game.BallSpawnPos1(), Quaternion.identity);
+                game.SpawnBall(game.BallSpawnPos1());
             }
             else
             {
-
-                Instantiate(Resources.Load("ball"), game.BallSpawnPos2(), Quaternion.identity);
+                // game.ball = (GameObject)Instantiate(Resources.Load("ball"), game.BallSpawnPos2(), Quaternion.identity);
+                game.SpawnBall(game.BallSpawnPos2());
             }
+            game.ResetPlayers();
         }
     }
 
