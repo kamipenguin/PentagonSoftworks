@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public enum Orientation {
-    Horizontal,
-    Vertical
-}
-
 public class Game : MonoBehaviour
 {
+    private enum Orientation {
+        Horizontal,
+        Vertical
+    }
+
     [SerializeField]
     private Orientation orientation;
 
@@ -79,7 +79,6 @@ public class Game : MonoBehaviour
 
         SpriteRenderer p2LSpriteRenderer = p2L.transform.GetChild(0).GetComponent<SpriteRenderer>();
         p2LSpriteRenderer.sprite = leftIcon;
-        // p2LSpriteRenderer.flipX = true;
 
         // Create the right character of player 2
         player2Right = (GameObject) Instantiate(Resources.Load("character"), player2RightSpawn.position, Quaternion.identity);
@@ -88,7 +87,6 @@ public class Game : MonoBehaviour
 
         SpriteRenderer p2RSpriteRenderer = p2R.transform.GetChild(0).GetComponent<SpriteRenderer>();
         p2RSpriteRenderer.sprite = rightIcon;
-        // p2RSpriteRenderer.flipX = true;
 
         timer = timerVal;
         isPlayState = true;
@@ -108,6 +106,7 @@ public class Game : MonoBehaviour
 
     void Update()
     {
+
         stats.text = "Player1Left: " + p1L.MovementSpeed();
         stats.text += "\nPlayer1Right: " + p1R.MovementSpeed();
         stats.text += "\nPlayer2Left: " + p2L.MovementSpeed();
@@ -200,8 +199,6 @@ public class Game : MonoBehaviour
                 p2R.Move(new Vector3(p2RhAxis, 0.0f, p2RvAxis));
             break;
         }
-
-
 
         if (p1LTrigger != 0f && p1L.IsBallInControl())
         {

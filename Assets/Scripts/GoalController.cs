@@ -41,7 +41,7 @@ public class GoalController : MonoBehaviour
 
     void SetGoalText()
     {
-        goalText.text = "Goals:" + goalCount.ToString();
+        goalText.text = "Goals: " + goalCount.ToString();
     }
 
     public int GoalCount()
