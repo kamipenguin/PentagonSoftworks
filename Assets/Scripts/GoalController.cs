@@ -35,12 +35,11 @@ public class GoalController : MonoBehaviour
             waitTime -= Time.deltaTime * 1.5f;
             if (waitTime <= 1)
             {
+                game.GameState = GameState.Playing;
                 countDown.text = "";
                 betweenGoals = false;
                 game.SetPlayerActive();
                 game.ResetPlayers();
-                game.IsPlayState = true;
-                
             }
         }
     }
@@ -49,20 +48,17 @@ public class GoalController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ball"))
         {
-            game.IsPlayState = false;
+            game.GameState = GameState.Scored;
             goalCount++;
             SetGoalText();
             Destroy(other.gameObject);
+            BetweenGoalTime();
             if (other.gameObject.transform.position.z < 0)
             {
-                BetweenGoalTime();
-                // game.ball = (GameObject)Instantiate(Resources.Load("ball"), game.BallSpawnPos1(), Quaternion.identity);
                 game.SpawnBall(game.BallSpawnPos1());
             }
             else
             {
-                BetweenGoalTime();
-                // game.ball = (GameObject)Instantiate(Resources.Load("ball"), game.BallSpawnPos2(), Quaternion.identity);
                 game.SpawnBall(game.BallSpawnPos2());
             }
         }
